@@ -30,7 +30,7 @@
                         <a class="nav-link active" data-toggle="tab" href="#menu1">Add Location</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#menu2">View Locations</a>
+                        <a class="nav-link" data-toggle="tab" href="#menu2" id="m2">View Locations</a>
                     </li>
                 </ul>
 
@@ -59,11 +59,11 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Distance</span>
                                             </div>
-                                            <input type="password" class="form-control" id="pass" name="upass">
+                                            <input type="password" class="form-control" id="distid" name="dist">
                                         </div>
 
                                         <!-- add button -->
-                                        <button type="button" class="btn btn-success">Add</button>
+                                        <button type="button" class="btn btn-success" id="add">Add</button>
                                     </form>
                                 </div>
                             </div>
@@ -77,13 +77,13 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>Location Names</th>
+                                                <th>Location Name</th>
                                                 <th>Distance</th>
-                                                <th>Operations</th>
                                                 <th>Available</th>
+                                                <th>Operations</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="output">
+                                        <tbody id="output1">
                                         </tbody>
                                     </table>
                                 </div>
@@ -103,9 +103,45 @@
     <!-- footer close -->
 </body>
 <script>
+    var button ;
     $(document).ready(function(){
         $("#signupitem").hide();
         $("#loginitem").hide();
+
+        $("#add").click(function(){
+            var lo = $("#locationid").val();
+            var dist = $("#distid").val();
+            button = 1;
+            $.ajax({
+                url: 'locationback.php',
+                type: 'POST',
+                data: {'button':button,
+                'location':lo,
+            'dist':dist},
+                success: function(data){
+                    console.log("Add Location Successfully");
+                },
+                error: function(){
+                    console.log("Error Occured Add");
+                }
+            });
+        });
+
+        $("#m2").click(function(){
+            button = 2;
+            $.ajax({
+                url: 'locationback.php',
+                type: 'POST',
+                data: {'button':button},
+                success: function(data){
+                    $("#output1").html(data);
+                    console.log("View Data Successfully");
+                },
+                error: function(){
+                    console.log("Error Occured View");
+                }
+            });
+        });
     });
 </script>
 </html>
