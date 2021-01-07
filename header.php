@@ -1,13 +1,18 @@
 <?php
-if (!isset($_SESSION)) {
-    session_start();
         if (isset($_POST['logout'])) {
-            session_unset();
+            $curPageName = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1); 
+            if($curPageName == 'index.php'){
+                session_unset();
             session_destroy();
-            ?><script>location.replace('signup.php')</script><?php
+                ?><script>location.replace('index.php');console.log('logout');</script><?php
+            }
+            else{
+                session_unset();
+            session_destroy();
+            ?><script>location.replace('../index.php');console.log('logout');</script><?php
             // header("Location:signup.php");
+            }
         }
-    }
 ?>
 
 <!DOCTYPE html>
@@ -26,15 +31,24 @@ if (!isset($_SESSION)) {
 
 <body>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+
+    <!-- navbar start -->
         <a class="navbar-brand " href="index.php" id="iconitem"><i class="fa fa-taxi fa-2x" aria-hidden="true" style="color: #00C851 ;"></i><span style="color: white;font-size:40px;"> CedCab</span></a>
+
+        <!-- navbar collapsbile button -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav ml-auto align-items-baseline">
+
+            <!-- signupitem -->
                 <li class="nav-item" id="signupitem">
-                    <a class="nav-link" href="signup.php" style="color:white;font-size:20px;margin-right:15px;">SIGN UP</a>
+                    <a class="nav-link" href="signup.php" style="color:white;font-size:20px;margin-right:35px;">SIGNUP / LOGIN</a>
                 </li>
+
+                <!-- dropdown menu -->
                 <li class="nav-item dropdown" id="userid">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                         <?php if (isset($_SESSION['sadmin'])) {
@@ -43,8 +57,15 @@ if (!isset($_SESSION)) {
                             echo $_SESSION['suser'];
                         } ?>
                     </a>
+
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Profile</a>
+                        <a class="dropdown-item" href="<?php
+                        if (isset($_SESSION['sadmin'])) {
+                            echo "profileadmin.php";
+                        } else {
+                            echo "profileuser.php";
+                        }
+                        ?>">Profile</a>
                         <form method="POST">
                             <a class="dropdown-item"><button type="submit" class="btn btn-danger" name="logout">Logout</button></a>
                         </form>
@@ -54,6 +75,8 @@ if (!isset($_SESSION)) {
             </ul>
         </div>
     </nav>
+    <!-- navbar close -->
+
 </body>
 <script>
 </script>
@@ -67,10 +90,12 @@ if (isset($_SESSION['suser']) || isset($_SESSION['sadmin'])) {
     <script>
         $(document).ready(function() {
             $("#signupitem").hide();
+            $("#iconitem").removeAttr('href');
         });
     </script>
 <?php
-} else {
+} 
+else {
 ?><script>
         $(document).ready(function() {
             $("#userid").hide();

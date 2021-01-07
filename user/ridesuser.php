@@ -1,3 +1,6 @@
+<?php
+include '../phpconfig.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +12,7 @@
 
 <body>
     <!-- header open-->
-    <?php include 'header.php'; ?>
+    <?php include '../header.php'; ?>
     <!-- header close -->
 
 
@@ -118,7 +121,7 @@
 
 
     <!-- footer open-->
-    <?php include 'footer.php'; ?>
+    <?php include '../footer.php'; ?>
     <!-- footer close -->
 </body>
 </html>

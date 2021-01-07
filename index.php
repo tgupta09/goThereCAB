@@ -1,3 +1,11 @@
+<?php
+session_start();
+$conn = new mysqli("localhost", "root", "", "cedcab") or die("Connection Unsucessful");
+$sql = "select name from tbl_location";
+$sql2 = "select name from tbl_location";
+$result = $conn->query($sql);
+$result2 = $conn->query($sql2);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -51,13 +59,20 @@
                             </div>
                             <select class="form-control" id="pickup">
                                 <option value="--">Choose Location</option>
-                                <option value="Charbagh">Charbagh</option>
+                                <?php
+                                if($result->num_rows>0){
+                                    while($row = $result->fetch_assoc()){
+                                        echo "<option value = '$row[name]'>$row[name]</option>";
+                                    }
+                                }
+                                ?>
+                                <!-- <option value="Charbagh">Charbagh</option>
                                 <option value="Indira_Nagar">Indira Nagar</option>
                                 <option value="BBD">BBD</option>
                                 <option value="Barabanki">Barabanki</option>
                                 <option value="Faizabad">Faizabad</option>
                                 <option value="Basti">Basti</option>
-                                <option value="Gorakhpur">Gorakhpur</option>
+                                <option value="Gorakhpur">Gorakhpur</option> -->
                             </select>
                         </div>
                         <!-- drop location box -->
@@ -67,13 +82,20 @@
                             </div>
                             <select class="form-control" id="drop">
                                 <option value="--">Choose Location</option>
-                                <option value="Charbagh">Charbagh</option>
+                                <?php
+                                if($result2->num_rows>0){
+                                    while($row2 = $result2->fetch_assoc()){
+                                        echo "<option value = '$row2[name]'>$row2[name]</option>";
+                                    }
+                                }
+                                ?>
+                                <!-- <option value="Charbagh">Charbagh</option>
                                 <option value="Indira_Nagar">Indira Nagar</option>
                                 <option value="BBD">BBD</option>
                                 <option value="Barabanki">Barabanki</option>
                                 <option value="Faizabad">Faizabad</option>
                                 <option value="Basti">Basti</option>
-                                <option value="Gorakhpur">Gorakhpur</option>
+                                <option value="Gorakhpur">Gorakhpur</option> -->
                             </select>
                         </div>
                         <!-- cab type box -->
@@ -118,7 +140,7 @@
 
                             <!-- Modal footer -->
                             <div class="modal-footer" id="mfooter">
-                                <button type="button" class="btn btn-success" onclick="">Book Cab</button>
+                                <button type="button" class="btn btn-success" id="book">Book Cab</button>
                             </div>
 
                         </div>
@@ -213,7 +235,7 @@
             drop = $("#drop").val().replace('_', ' ');
             ctype = $("#ctype").val();
             lugg = Math.abs($("#lugg").val());
-
+            var button = 1
             if (pickup != '--' && drop != '--' && ctype != '--') {
                 if (lugg == '') {
                     lugg = 0;
@@ -222,6 +244,7 @@
                     url: 'indexback3.php',
                     type: 'POST',
                     data: {
+                        'button':button,
                         'pickup': pickup,
                         'drop': drop,
                         'ctype': ctype,
@@ -260,6 +283,23 @@
                 mess='';pi = ''; dr = ''; ct = '';
                 document.getElementById('mfooter').style.display = "none";
             }
+        });
+
+        $("#book").click(function(){
+            var button = 2;
+            $.ajax({
+                urL:'indexback3.php',
+                type:'POST',
+                data:{
+                    'button':button 
+                },
+                success: function(data){
+                    console.log("successful");
+                },
+                error: function(){
+                    console.log("Error Occured");
+                }
+            })
         });
     });
 </script>

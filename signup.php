@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -354,13 +357,13 @@ if (isset($_POST['signupbutton'])) {
                         $_SESSION['suser'] = $name;
                         // header("location:welcomeuser.php");
                 ?> <script>
-                location.replace("userdash.php");
+                location.replace("user/index.php");
             </script><?php
                     } else if ($row2['status'] == 1 && $row2['is_admin'] == 1) {
                         $_SESSION['sadmin'] = $name;
                         // header("location:welcomeuser.php");
                         ?> <script>
-                location.replace("admindash.php");
+                location.replace("admin/index.php");
             </script><?php
                     } else if ($row2['status'] == 0) {
                         ?> <script>

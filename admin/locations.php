@@ -1,3 +1,6 @@
+<?php
+include '../phpconfig.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +12,7 @@
 
 <body>
     <!-- header open-->
-    <?php include 'header.php'; ?>
+    <?php include '../header.php'; ?>
     <!-- header close -->
 
 
@@ -20,10 +23,10 @@
             <div class="col-lg-10">
                 <!-- heading rides -->
                 <div style="border-bottom:1px solid grey;">
-                    <h1 class="display-4">Location</h1>
+                    <h1 class="display-4">Locations</h1>
                     <h5>Add, View, Edit & Delete locations</h5>
                 </div>
-                    <!-- tabs open-->
+                <!-- tabs open-->
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
@@ -54,12 +57,12 @@
                                             <input type="text" class="form-control" id="locationid" name="locationname">
                                         </div>
 
-                                        <!-- disatnce -->
+                                        <!-- distance -->
                                         <div class="input-group" style="margin-bottom:5%">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Distance</span>
                                             </div>
-                                            <input type="password" class="form-control" id="distid" name="dist">
+                                            <input type="text" class="form-control" id="distid" name="dist">
                                         </div>
 
                                         <!-- add button -->
@@ -79,7 +82,7 @@
                                             <tr>
                                                 <th>Location Name</th>
                                                 <th>Distance</th>
-                                                <th>Available</th>
+                                                <th>Is Available</th>
                                                 <th>Operations</th>
                                             </tr>
                                         </thead>
@@ -97,51 +100,186 @@
     </div>
     <!-- section close -->
 
+    <!-- modal for update -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div id="modalbody"></div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success mx-auto" id='update' data-dismiss="modal">Update</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <!-- footer open-->
-    <?php include 'footer.php'; ?>
+    <?php include '../footer.php'; ?>
     <!-- footer close -->
 </body>
 <script>
-    var button ;
-    $(document).ready(function(){
+    var button,gl_id;
+    $(document).ready(function() {
         $("#signupitem").hide();
         $("#loginitem").hide();
 
-        $("#add").click(function(){
+        $("#add").click(function() {
             var lo = $("#locationid").val();
             var dist = $("#distid").val();
             button = 1;
             $.ajax({
                 url: 'locationback.php',
                 type: 'POST',
-                data: {'button':button,
-                'location':lo,
-            'dist':dist},
-                success: function(data){
-                    console.log("Add Location Successfully");
+                data: {
+                    'button': button,
+                    'location': lo,
+                    'dist': dist
                 },
-                error: function(){
+                success: function(data) {
+                    alert("Add Location Successfully");
+                },
+                error: function() {
                     console.log("Error Occured Add");
                 }
             });
         });
 
-        $("#m2").click(function(){
+        $("#m2").click(function() {
             button = 2;
             $.ajax({
                 url: 'locationback.php',
                 type: 'POST',
-                data: {'button':button},
-                success: function(data){
+                data: {
+                    'button': button
+                },
+                success: function(data) {
                     $("#output1").html(data);
                     console.log("View Data Successfully");
                 },
-                error: function(){
+                error: function() {
                     console.log("Error Occured View");
                 }
             });
         });
     });
+
+    $(document).on('click', '#available', function() {
+        button = 3;
+        gl_id = $(this).data("eid");
+        $.ajax({
+            url: 'locationback.php',
+            type: 'POST',
+            data: {
+                'button': button,
+                'id': gl_id
+            },
+            success: function(data) {
+                $("#output1").html(data);
+                console.log("Available");
+            },
+            error: function() {
+                console.log("Error Occured View2");
+            }
+        });
+    });
+
+    $(document).on('click', '#unavailable', function() {
+        button = 4;
+        gl_id = $(this).data("eid");
+        $.ajax({
+            url: 'locationback.php',
+            type: 'POST',
+            data: {
+                'button': button,
+                'id': gl_id
+            },
+            success: function(data) {
+                $("#output1").html(data);
+                console.log("Unavailable");
+            },
+            error: function() {
+                console.log("Error Occured View3");
+            }
+        });
+    });
+
+    $(document).on('click', '#delete', function() {
+        button = 5;
+        gl_id = $(this).data("eid");
+        $.ajax({
+            url: 'locationback.php',
+            type: 'POST',
+            data: {
+                'button': button,
+                'id': gl_id
+            },
+            success: function(data) {
+                $("#output1").html(data);
+                console.log("Delete");
+            },
+            error: function() {
+                console.log("Error Occured View3");
+            }
+        });
+    });
+
+
+    $(document).on('click', '#edit', function() {
+        button = 6;
+        gl_id = $(this).data("eid");
+        $.ajax({
+            url: 'locationback.php',
+            type: 'POST',
+            data: {
+                'button': button,
+                'id': gl_id
+            },
+            success: function(data) {
+                $("#modalbody").html(data);
+                console.log("Delete");
+            },
+            error: function() {
+                console.log("Error Occured View3");
+            }
+        });
+    });
+
+    $(document).on('click', '#update', function() {
+        button = 7;
+        var dista = $("#distidf").val();
+        var loca = $("#locationidf").val();
+        console.log(dista);
+        console.log(loca);
+        console.log(gl_id);
+        $.ajax({
+            url: 'locationback.php',
+            type: 'POST',
+            data: {
+                'button': button,
+                'id': gl_id,
+                'location':loca,
+                'distance':dista
+            },
+            success: function(data) {
+                $("#output1").html(data);
+            },
+            error: function() {
+                console.log("Error Occured View3");
+            }
+        });
+    });
 </script>
+
 </html>

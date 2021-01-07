@@ -1,7 +1,5 @@
 <?php
-if (!isset($_SESSION)) {
-    session_start();
-}
+include '../phpconfig.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +13,7 @@ if (!isset($_SESSION)) {
 <body>
     <!-- header open-->
     <header>
-        <?php include 'header.php'; ?>
+        <?php include '../header.php'; ?>
     </header>
     <!-- header close -->
 
@@ -30,8 +28,14 @@ if (!isset($_SESSION)) {
                             <div class="card text-white bg-success text-center" style="max-width: 18rem;">
                                 <div class="card-body">
                                     <h5 class="card-title">Ride Requests</h5>
-                                    <p class="card-text">%num%</p>
-                                    <button class="btn btn-outline-light">View Details</button>
+                                    <p class="card-text">
+                                    <?php 
+                                    $sql = "select * from tbl_ride where status = 1";
+                                    $res = $conn->query($sql);
+                                    echo $res->num_rows;
+                                    ?>
+                                    </p>
+                                    <button class="btn btn-outline-light" onclick="window.location.href='rides.php#menu2';">View Details</button>
                                 </div>
                             </div>
                         </div>
@@ -39,8 +43,12 @@ if (!isset($_SESSION)) {
                             <div class="card text-white bg-success text-center" style="max-width: 18rem;">
                                 <div class="card-body">
                                     <h5 class="card-title">Completed Rides</h5>
-                                    <p class="card-text">%num%</p>
-                                    <button class="btn btn-outline-light">View Details</button>
+                                    <p class="card-text"><?php 
+                                    $sql = "select * from tbl_ride where status = 2";
+                                    $res = $conn->query($sql);
+                                    echo $res->num_rows;
+                                    ?></p>
+                                    <button class="btn btn-outline-light" onclick="window.location.href='rides.php#menu2';">View Details</button>
                                 </div>
                             </div>
                         </div>
@@ -48,8 +56,12 @@ if (!isset($_SESSION)) {
                             <div class="card text-white bg-success text-center" style="max-width: 18rem;">
                                 <div class="card-body">
                                     <h5 class="card-title">Canceled Rides</h5>
-                                    <p class="card-text">%num%</p>
-                                    <button class="btn btn-outline-light">View Details</button>
+                                    <p class="card-text"><?php 
+                                    $sql = "select * from tbl_ride where status = 0";
+                                    $res = $conn->query($sql);
+                                    echo $res->num_rows;
+                                    ?></p>
+                                    <button class="btn btn-outline-light" onclick="window.location.href='rides.php#menu2';">View Details</button>
                                 </div>
                             </div>
                         </div>
@@ -57,8 +69,12 @@ if (!isset($_SESSION)) {
                             <div class="card text-white bg-success text-center" style="max-width: 18rem;">
                                 <div class="card-body">
                                     <h5 class="card-title">All Rides</h5>
-                                    <p class="card-text">%num%</p>
-                                    <button class="btn btn-outline-light">View Details</button>
+                                    <p class="card-text"><?php 
+                                    $sql = "select * from tbl_ride";
+                                    $res = $conn->query($sql);
+                                    echo $res->num_rows;
+                                    ?></p>
+                                    <button class="btn btn-outline-light" onclick="window.location.href='rides.php#menu2';">View Details</button>
                                 </div>
                             </div>
                         </div>
@@ -69,8 +85,12 @@ if (!isset($_SESSION)) {
                             <div class="card text-white bg-success text-center" style="max-width: 18rem;">
                                 <div class="card-body">
                                     <h5 class="card-title">Pending User Requests</h5>
-                                    <p class="card-text">%num%</p>
-                                    <button class="btn btn-outline-light">View Details</button>
+                                    <p class="card-text"><?php 
+                                    $sql = "select * from tbl_user where status = 0";
+                                    $res = $conn->query($sql);
+                                    echo $res->num_rows;
+                                    ?></p>
+                                    <button class="btn btn-outline-light" onclick="window.location.href='users.php#menu2';">View Details</button>
                                 </div>
                             </div>
                         </div>
@@ -78,8 +98,12 @@ if (!isset($_SESSION)) {
                             <div class="card text-white bg-success text-center" style="max-width: 18rem;">
                                 <div class="card-body">
                                     <h5 class="card-title">Approved User Requests</h5>
-                                    <p class="card-text">%num%</p>
-                                    <button class="btn btn-outline-light">View Details</button>
+                                    <p class="card-text"><?php 
+                                    $sql = "select * from tbl_user where status = 1";
+                                    $res = $conn->query($sql);
+                                    echo $res->num_rows;
+                                    ?></p>
+                                    <button class="btn btn-outline-light" onclick="window.location.href='users.php#menu2';">View Details</button>
                                 </div>
                             </div>
                         </div>
@@ -87,8 +111,12 @@ if (!isset($_SESSION)) {
                             <div class="card text-white bg-success text-center" style="max-width: 18rem;">
                                 <div class="card-body">
                                     <h5 class="card-title">All Users</h5>
-                                    <p class="card-text">%num%</p>
-                                    <button class="btn btn-outline-light">View Details</button>
+                                    <p class="card-text"><?php 
+                                    $sql = "select * from tbl_user";
+                                    $res = $conn->query($sql);
+                                    echo $res->num_rows;
+                                    ?></p>
+                                    <button class="btn btn-outline-light" onclick="window.location.href='users.php#menu2';">View Details</button>
                                 </div>
                             </div>
                         </div>
@@ -96,8 +124,12 @@ if (!isset($_SESSION)) {
                             <div class="card text-white bg-success text-center" style="max-width: 18rem;">
                                 <div class="card-body">
                                     <h5 class="card-title">Serviceable Locations</h5>
-                                    <p class="card-text">%num%</p>
-                                    <button class="btn btn-outline-light">View Details</button>
+                                    <p class="card-text"><?php 
+                                    $sql = "select * from tbl_location where is_available = 1";
+                                    $res = $conn->query($sql);
+                                    echo $res->num_rows;
+                                    ?></p>
+                                    <button class="btn btn-outline-light" onclick="window.location.href='locations.php#menu2';">View Details</button>
                                 </div>
                             </div>
                         </div>
@@ -113,7 +145,7 @@ if (!isset($_SESSION)) {
 
         <!-- footer open -->
         <footer>
-            <?php include 'footer.php'; ?>
+            <?php include '../footer.php'; ?>
         </footer>
         <!-- footer close -->
 </body>
@@ -124,11 +156,8 @@ if (!isset($_SESSION)) {
         $("#iconitem").removeAttr('href');
     });
 </script>
-
 </html>
-<?php
-if (!isset($_SESSION['sadmin']) || !isset($_SESSION['suser'])) {
-    header("Location:signup.php");
 
-}
+<?php
+$conn->close();
 ?>

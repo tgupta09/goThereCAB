@@ -1,3 +1,6 @@
+<?php
+include '../phpconfig.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +12,7 @@
 
 <body>
     <!-- header open-->
-    <?php include 'header.php'; ?>
+    <?php include '../header.php'; ?>
     <!-- header  close -->
 
 
@@ -33,7 +36,7 @@
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#menu1">Pending Requests</a>
+                        <a class="nav-link active" data-toggle="tab" href="#menu1" id="m1">Pending Requests</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#menu2" id="m2">Approved Requests</a>
@@ -127,26 +130,43 @@
 
 
     <!-- footer open-->
-    <?php include 'footer.php'; ?>
+    <?php include '../footer.php'; ?>
     <!-- footer  close -->
 </body>
 <script>
     var button;
     $(document).ready(function() {
-        buton = 1;
+        button = 1;
         $.ajax({
             url: 'userback.php',
             type: 'POST',
             data: {
-                'button': buttton
+                'button': button
             },
             success: function(data) {
-                $("#output1").html(data)
+                $("#output1").html(data);
             },
             error: function() {
                 console.log("Error Occured1");
             }
         });
+        $("#m1").click(function() {
+            button = 1;
+            $.ajax({
+                url: 'userback.php',
+                type: 'POST',
+                data: {
+                    'button': button
+                },
+                success: function(data) {
+                    $("#output1").html(data);
+                },
+                error: function() {
+                    console.log("Error Occured1");
+                }
+            });
+        });
+
 
         $("#m2").click(function() {
             button = 2;
@@ -154,10 +174,10 @@
                 url: 'userback.php',
                 type: 'POST',
                 data: {
-                    'button': buttton
+                    'button': button
                 },
                 success: function(data) {
-                    $("#output2").html(data)
+                    $("#output2").html(data);
                 },
                 error: function() {
                     console.log("Error Occured2");
@@ -171,15 +191,78 @@
                 url: 'userback.php',
                 type: 'POST',
                 data: {
-                    'button': buttton
+                    'button': button
                 },
                 success: function(data) {
-                    $("#output3").html(data)
+                    $("#output3").html(data);
                 },
                 error: function() {
                     console.log("Error Occured3");
                 }
             });
+        });
+    });
+
+    $(document).on('click', '#accept', function() {
+        button = 4;
+        var gl_id = $(this).data("eid");
+        console.log(gl_id);
+        $.ajax({
+            url: 'userback.php',
+            type: 'POST',
+            data: {
+                'button': button,
+                'id': gl_id
+            },
+            success: function(data) {
+                $("#output1").html(data);
+                alert('User Request Accepted');
+            },
+            error: function() {
+                console.log("Error Occured4");
+            }
+        });
+    });
+
+
+    $(document).on('click', '#reject', function() {
+        button = 5;
+        var gl_id = $(this).data("eid");
+        console.log(gl_id);
+        $.ajax({
+            url: 'userback.php',
+            type: 'POST',
+            data: {
+                'button': button,
+                'id': gl_id
+            },
+            success: function(data) {
+                $("#output1").html(data);
+                alert('User Request Declined');
+            },
+            error: function() {
+                console.log("Error Occured5");
+            }
+        });
+    });
+
+    $(document).on('click', '#status', function() {
+        button = 6;
+        var gl_id = $(this).data("eid");
+        console.log(gl_id);
+        $.ajax({
+            url: 'userback.php',
+            type: 'POST',
+            data: {
+                'button': button,
+                'id': gl_id
+            },
+            success: function(data) {
+                $("#output3").html(data);
+            },
+            error: function() {
+                console.log("Error Occured6");
+            }
         });
     });
 </script>
