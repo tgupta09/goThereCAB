@@ -24,7 +24,7 @@ if ($button == 1) {
 
 // completed rides
 if ($button == 2) {
-    $sql_query = "select ride_id, ride_date, fromlocation, tolocation, total_distance, luggage, total_fare, cab_type, status from tbl_ride where status = 2";
+    $sql_query = "select tbl_user.user_id, tbl_user.name, tbl_ride.ride_id, tbl_ride.ride_date, tbl_ride.fromlocation, tbl_ride.tolocation, tbl_ride.total_distance, tbl_ride.luggage, tbl_ride.total_fare, tbl_ride.cab_type from tbl_ride inner join tbl_user on tbl_ride.customer_user_id = tbl_user.user_id where tbl_ride.status = 2";
 
     $result = $conn->query($sql_query);
     while ($row  = $result->fetch_assoc()) {
@@ -34,7 +34,9 @@ if ($button == 2) {
         echo "<td>" . $row['total_distance'] . "</td>";
         echo "<td>" . $row['luggage'] . "</td>";
         echo "<td>" . $row['total_fare'] . "</td>";
-        echo "<td><button class = 'btn btn-success' id='invoice' data-toggle='modal' data-target='#myModal' data-eid={$row['ride_id']} style = 'margin:2%;'>Invoice</button></td></tr>";
+        echo "<td>" . $row['user_id'] . "</td>";
+        echo "<td>" . $row['name'] . "</td>";
+        echo "<td></tr>";
     }
 }
 
@@ -85,9 +87,5 @@ if($button ==6){
     selectall($conn);
 }
 
-
-if($button == 7){
-    // don't know
-}
 $conn->close();
 ?>

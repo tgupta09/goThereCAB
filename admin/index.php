@@ -99,7 +99,7 @@ include '../phpconfig.php';
                                 <div class="card-body">
                                     <h5 class="card-title">Approved User Requests</h5>
                                     <p class="card-text"><?php 
-                                    $sql = "select * from tbl_user where status = 1";
+                                    $sql = "select * from tbl_user where status = 1 and is_admin = 0";
                                     $res = $conn->query($sql);
                                     echo $res->num_rows;
                                     ?></p>
@@ -112,7 +112,7 @@ include '../phpconfig.php';
                                 <div class="card-body">
                                     <h5 class="card-title">All Users</h5>
                                     <p class="card-text"><?php 
-                                    $sql = "select * from tbl_user";
+                                    $sql = "select * from tbl_user where is_admin = 0";
                                     $res = $conn->query($sql);
                                     echo $res->num_rows;
                                     ?></p>

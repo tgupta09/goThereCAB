@@ -1,6 +1,6 @@
 <?php
 include '../phpconfig.php';
-$sql = "select email_id, name, mobile from tbl_user where email_id = 1";
+$sql = "select email_id, name, mobile from tbl_user where email_id = '$_SESSION[suser]'";
 $res = $conn->query($sql);
 $row = $res->fetch_assoc();
 ?>

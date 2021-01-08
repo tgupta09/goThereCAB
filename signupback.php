@@ -107,4 +107,15 @@ if($button ==2 ){
     //   echo $response;
     // }
 }}
+
+if($button == 8){
+        $pass = md5($passw);
+        // if ($name != '' && $email != '' && $mob != '' && $pass != '') {
+        $conn = new mysqli("localhost", "root", "", "cedcab") or die("Connection Unsucessful");
+    
+        $sql_query = "insert into tbl_user(email_id,name,dateofsignup,mobile,status,password,is_admin) values('$email','$name',now(),'$mob','0','$pass','0')";
+    
+        $result = $conn->query($sql_query);
+        $_SESSION['suser'] = $email;
+            }
 ?>

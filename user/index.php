@@ -1,5 +1,10 @@
 <?php
 include '../phpconfig.php';
+// extract user id
+$sql4 ="select user_id from tbl_user where email_id='$_SESSION[suser]'";
+    $res1 = $conn->query($sql4);
+    $row = $res1->fetch_assoc();
+    $customerid = $row['user_id'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,19 +27,20 @@ include '../phpconfig.php';
         <div class="container-fluid">
             <div class="row">
             <?php include 'uservnavs.php'?>
-                <div class="col-lg-10">
+                <div class="col-lg-10" style="padding-bottom: 17%;">
                 <div class="row">
                         <div class="col-lg-3" style="padding:2%">
                             <div class="card text-white bg-success text-center" style="max-width: 18rem;">
                                 <div class="card-body">
                                     <h5 class="card-title">Pending Rides</h5>
-                                    <p class="card-text"><?php 
-                                    $sql = "select * from tbl_ride where status = 1";
+                                    <p class="card-text">
+                                    <?php 
+                                    $sql = "select * from tbl_ride where status = 1 and customer_user_id = $customerid";
                                     //  and customer_user_id;
                                     $res = $conn->query($sql);
                                     echo $res->num_rows;
                                     ?></p>
-                                    <button class="btn btn-outline-light">View Details</button>
+                                    <button class="btn btn-outline-light" onclick="window.location.href='ridesuser.php';">View Details</button>
                                 </div>
                             </div>
                         </div>
@@ -43,12 +49,12 @@ include '../phpconfig.php';
                                 <div class="card-body">
                                     <h5 class="card-title">Completed Rides</h5>
                                     <p class="card-text"><?php 
-                                    $sql = "select * from tbl_ride where status = 2";
+                                    $sql = "select * from tbl_ride where status = 2 and customer_user_id = $customerid";
                                     //  and customer_user_id;
                                     $res = $conn->query($sql);
                                     echo $res->num_rows;
                                     ?></p>
-                                    <button class="btn btn-outline-light">View Details</button>
+                                    <button class="btn btn-outline-light"  onclick="window.location.href='ridesuser.php';">View Details</button>
                                 </div>
                             </div>
                         </div>
@@ -57,12 +63,12 @@ include '../phpconfig.php';
                                 <div class="card-body">
                                     <h5 class="card-title">All Rides</h5>
                                     <p class="card-text"><?php 
-                                    $sql = "select * from tbl_ride where status = 0";
+                                    $sql = "select * from tbl_ride where status = 0 and customer_user_id = $customerid";
                                     //  and customer_user_id;
                                     $res = $conn->query($sql);
                                     echo $res->num_rows;
                                     ?></p>
-                                    <button class="btn btn-outline-light">View Details</button>
+                                    <button class="btn btn-outline-light"  onclick="window.location.href='ridesuser.php';">View Details</button>
                                 </div>
                             </div>
                         </div>
@@ -70,13 +76,13 @@ include '../phpconfig.php';
                             <div class="card text-white bg-success text-center" style="max-width: 18rem;">
                                 <div class="card-body">
                                     <h5 class="card-title">Total Expenses</h5>
-                                    <p class="card-text"><?php 
-                                    $sql = "select * from tbl_ride where status = 1";
-                                    //  and customer_user_id;
+                                    <p class="card-text" style="padding-bottom: 5%;">&#8377;<?php 
+                                    $sql = "select sum(total_fare) from tbl_ride where status = 2 and customer_user_id = $customerid";
+                                    //  and customer_user_id
                                     $res = $conn->query($sql);
-                                    echo $res->num_rows;
+                                    $row = $res->fetch_assoc();
+                                    echo $row['sum(total_fare)'];
                                     ?></p>
-                                    <button class="btn btn-outline-light">View Details</button>
                                 </div>
                             </div>
                         </div>
@@ -84,10 +90,6 @@ include '../phpconfig.php';
                 </div>
             </div>
         </div>
-        <form method="POST">
-            <h1 class="display-1">hi!</h1>
-            <button type="submit" class="btn btn-danger d-inline" name="logout">Logout</button>
-        </form>
         <!-- section close -->
 
         <!-- footer open -->
@@ -96,5 +98,7 @@ include '../phpconfig.php';
         </footer>
         <!-- footer close -->
 </body>
-
+<script>$(document).ready(function(){
+    $("#homeitem").hide();
+});</script>
 </html>

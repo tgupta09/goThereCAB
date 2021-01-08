@@ -49,9 +49,9 @@ $result2 = $conn->query($sql2);
                 <div class="col-lg-4 col-md-8 col-sm-12" style="padding:0% 4%;">
                     <!-- Form -->
                     <form class="form" style="padding:2% 2%;border-radius:5px;background-color: white;">
-                    <h5 class="text-center"><span style="background-color: #00C851;border-radius:50px;padding:0px 10px;color:white;">CITY TAXI</span></h5>
-                    <h6 class="text-center font-weight-bold">Your everyday travel partner</h6>
-                    <h6 class="text-center">AC Cabs for point to point travel</h6>
+                        <h5 class="text-center"><span style="background-color: #00C851;border-radius:50px;padding:0px 10px;color:white;">CITY TAXI</span></h5>
+                        <h6 class="text-center font-weight-bold">Your everyday travel partner</h6>
+                        <h6 class="text-center">AC Cabs for point to point travel</h6>
                         <!-- pickup location box -->
                         <div class="input-group" style="margin-bottom:5%">
                             <div class="input-group-prepend">
@@ -60,8 +60,8 @@ $result2 = $conn->query($sql2);
                             <select class="form-control" id="pickup">
                                 <option value="--">Choose Location</option>
                                 <?php
-                                if($result->num_rows>0){
-                                    while($row = $result->fetch_assoc()){
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
                                         echo "<option value = '$row[name]'>$row[name]</option>";
                                     }
                                 }
@@ -83,8 +83,8 @@ $result2 = $conn->query($sql2);
                             <select class="form-control" id="drop">
                                 <option value="--">Choose Location</option>
                                 <?php
-                                if($result2->num_rows>0){
-                                    while($row2 = $result2->fetch_assoc()){
+                                if ($result2->num_rows > 0) {
+                                    while ($row2 = $result2->fetch_assoc()) {
                                         echo "<option value = '$row2[name]'>$row2[name]</option>";
                                     }
                                 }
@@ -140,7 +140,9 @@ $result2 = $conn->query($sql2);
 
                             <!-- Modal footer -->
                             <div class="modal-footer" id="mfooter">
-                                <button type="button" class="btn btn-success" id="book">Book Cab</button>
+                                <form method="POST">
+                                    <input type="submit" class="btn btn-success" name="book" value='Book Cab'>
+                                </form>
                             </div>
 
                         </div>
@@ -199,7 +201,11 @@ $result2 = $conn->query($sql2);
 
     // script for luggage input box so that it can enter correct value with 3 decimal places
     var invalidChars = ["-", "e", "+", "E"];
-    var pi = '', dr = '', ct = '',mess='',pickup,drop,ctype,lugg;
+    var pi = '',
+        dr = '',
+        ct = '',
+        mess = '',
+        pickup, drop, ctype, lugg;
     $("input[type='number']").on("keydown", function(e) {
         if (invalidChars.includes(e.key)) {
             e.preventDefault();
@@ -231,8 +237,8 @@ $result2 = $conn->query($sql2);
         });
 
         $("#btnca").click(function() {
-            pickup = $("#pickup").val().replace('_', ' ');
-            drop = $("#drop").val().replace('_', ' ');
+            pickup = $("#pickup").find(":selected").text();
+            drop = $("#drop").find(":selected").text();
             ctype = $("#ctype").val();
             lugg = Math.abs($("#lugg").val());
             var button = 1
@@ -244,7 +250,7 @@ $result2 = $conn->query($sql2);
                     url: 'indexback3.php',
                     type: 'POST',
                     data: {
-                        'button':button,
+                        'button': button,
                         'pickup': pickup,
                         'drop': drop,
                         'ctype': ctype,
@@ -262,45 +268,82 @@ $result2 = $conn->query($sql2);
                 });
             } else {
                 // on failure show alert in modal box
-                if(pickup == '--'){pi="Pickup Location";}
-                if(drop == '--'){dr="Drop Location";}
-                if(ctype == '--'){ct="Cab Type";}
+                if (pickup == '--') {
+                    pi = "Pickup Location";
+                }
+                if (drop == '--') {
+                    dr = "Drop Location";
+                }
+                if (ctype == '--') {
+                    ct = "Cab Type";
+                }
 
-                if(pickup=='--' && drop =='--' && ctype =='--'){
-                    mess = "Please select "+pi+", "+dr+" & "+ct;
-                }
-                else if((pickup!='--' && drop =='--' && ctype =='--')||(pickup=='--' && drop !='--' && ctype =='--')){
-                    mess = "Please select "+pi+dr+" & "+ct;
-                }
-                else if(pickup=='--' && drop =='--' && ctype !='--'){
-                    mess = "Please select "+pi+" & "+dr;
-                }
-                else if((pickup!='--' && drop !='--' && ctype =='--')||(pickup=='--' && drop !='--' && ctype !='--')||(pickup!='--' && drop =='--' && ctype !='--')){
-                    mess = "Please select "+pi+dr+ct;
+                if (pickup == '--' && drop == '--' && ctype == '--') {
+                    mess = "Please select " + pi + ", " + dr + " & " + ct;
+                } else if ((pickup != '--' && drop == '--' && ctype == '--') || (pickup == '--' && drop != '--' && ctype == '--')) {
+                    mess = "Please select " + pi + dr + " & " + ct;
+                } else if (pickup == '--' && drop == '--' && ctype != '--') {
+                    mess = "Please select " + pi + " & " + dr;
+                } else if ((pickup != '--' && drop != '--' && ctype == '--') || (pickup == '--' && drop != '--' && ctype != '--') || (pickup != '--' && drop == '--' && ctype != '--')) {
+                    mess = "Please select " + pi + dr + ct;
                 }
                 document.getElementById('mheader').innerHTML = "ALERT";
                 document.getElementById('mbody').innerHTML = mess;
-                mess='';pi = ''; dr = ''; ct = '';
+                mess = '';
+                pi = '';
+                dr = '';
+                ct = '';
                 document.getElementById('mfooter').style.display = "none";
             }
         });
-
-        $("#book").click(function(){
-            var button = 2;
-            $.ajax({
-                urL:'indexback3.php',
-                type:'POST',
-                data:{
-                    'button':button 
-                },
-                success: function(data){
-                    console.log("successful");
-                },
-                error: function(){
-                    console.log("Error Occured");
-                }
-            })
-        });
     });
 </script>
+
 </html>
+
+<?php
+
+function a($conn1){
+    // taking every session varailbe into variable
+    $pickup = $_SESSION['pickup'];
+    $drop = $_SESSION['drop'];
+    $ctype = $_SESSION['ctype'];
+    $dist = $_SESSION['dist'];
+    $lugg = $_SESSION['lugg'];
+    $faree = $_SESSION['faree'];
+
+    // extract user id
+    $sql4 ="select user_id from tbl_user where email_id='$_SESSION[suser]'";
+    $res1 = $conn1->query($sql4);
+    $row = $res1->fetch_assoc();
+    $customerid = $row['user_id'];
+    
+    // insert into tbl_ride booking details
+    $sql3 = "insert into tbl_ride (ride_date, fromlocation, tolocation, total_distance, luggage, total_fare, cab_type, status,customer_user_id) values(now(),'$pickup','$drop','$dist','$lugg','$faree','$ctype',1,'$customerid')";
+    $res = $conn1->query($sql3);
+                if ($res == TRUE) {
+                    echo "<script>alert('Ride Booked');</script>";
+                    unset($_SESSION['pickup']);
+                    unset($_SESSION['drop']);
+                    unset($_SESSION['dist']);
+                    unset($_SESSION['lugg']);
+                    unset($_SESSION['faree']);
+                }
+                else {
+                    echo "<script>alert('Ride Not Booked');</script>";
+            } 
+}
+
+if (isset($_POST['book'])) {
+    if (isset($_SESSION['suser'])) {
+        a($conn);
+        }
+    else{
+        echo "<script>location.replace('signup.php')</script>";
+    }   
+}
+else if(isset($_SESSION['pickup'])){
+    a($conn);
+}
+
+                        ?>

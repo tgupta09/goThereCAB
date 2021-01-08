@@ -80,11 +80,12 @@ session_start();
                                 </div>
 
 
-                                <button class="btn btn-success" name="signupbutton">Sign Up</button>
+                                <button type="button" class="btn btn-success" name="signupbutton" id="signup">Sign Up</button>
                             </form>
                         </div>
                         <div id="menu2" class="container tab-pane active"><br>
                             <form class="form" method="POST" style="border:2px solid black; border-radius:10px;padding:5% 5%;margin :auto;">
+                            <h3>Login Form</h3>
                                 <!-- user box -->
                                 <div class="input-group" style="margin-bottom:5%">
                                     <div class="input-group-prepend">
@@ -182,7 +183,7 @@ session_start();
 <script>
     var button;
     $(document).ready(function() {
-        $("#signuplink").hide();
+        $("#signupitem").hide();
 
         $("#emailid").click(function() {
             console.log("emailtext");
@@ -298,6 +299,32 @@ session_start();
             });
         });
 
+        $("#signup").click(function(){
+            console.log('signup');
+            var username = $('#emailid').val();
+            var mobile = $('#mobile').val();
+            var name = $('#uname').val();
+            var pass = $('#passw').val();
+            button = 8;
+            $.ajax({
+                url:'signupback.php',
+                type:'POST',
+                data: {
+                    'button':button,
+                    'email':username,
+                    'name':name,
+                    'mob':mobile,
+                    'passw':pass
+                },
+                success: function(data){
+                    alert("Registration Successful, Kindly Wait for Admin Permission");
+                },
+                error: function(){
+                    console.log('Error Occured SignUp');
+                } 
+            });
+        });
+
     });
 </script>
 
@@ -305,75 +332,60 @@ session_start();
 
 
 <?php
-if (isset($_POST['signupbutton'])) {
-    $name = $_POST['uname'];
-    $email = $_POST['elmail'];
-    $mob = $_POST['mobi'];
-    $pass = md5($_POST['pass']);
-    $dateofsignup = date("Y-m-d H:i:s");
-    // if ($name != '' && $email != '' && $mob != '' && $pass != '') {
-    $conn = new mysqli("localhost", "root", "", "cedcab") or die("Connection Unsucessful");
-
-    $sql_query = "insert into tbl_user(email_id,name,dateofsignup,mobile,status,password,is_admin) values('$email','$name','$dateofsignup','$mob','1','$pass','0')";
-
-    $result = $conn->query($sql_query);
-    $_SESSION['suser'] = $email;
-
-    if ($result == TRUE) {
-?> <script>
-            location.replace("userdash.php");
-        </script><?php
-                    // header("location:welcomeuser.php");
-                } else {
-                    echo "<script>alert('Data Not Inserted');</script>";
-                }
-                $conn->close();
-                // }
-            }
 
 
 
-    
             if (isset($_POST['loginbutton'])) {
 
                 $name = $_POST['uemail'];
                 $pass = $_POST['upass'];
-                // echo "<script>alert('".$name."')</script>";
-                // echo "<script>alert('".$pass."')</script>";
-                // if($name != '' && $pass!=''){
+                if($name != '' && $pass !=''){
+                $encryptpass = md5($pass);
+
                 $conn = new mysqli("localhost", "root", "", "cedcab") or die("Connection Unsucessful");
 
-                $sql_query = "select status,is_admin from tbl_user where email_id='$name' and password = '$pass'";
+                $sql_query = "select status,is_admin from tbl_user where email_id='$name' and password = '$encryptpass'";
 
                 $result = $conn->query($sql_query);
                 $row = $result->num_rows;
 
                 $row2 = $result->fetch_assoc();
-                // echo "<script>alert('".$row2['status']."')</script>";
-                // echo "<script>alert('".$row2['is_admin']."')</script>";
+
                 if ($row == 1) {
                     if ($row2['status'] == 1 && $row2['is_admin'] == 0) {
 
                         $_SESSION['suser'] = $name;
-                        // header("location:welcomeuser.php");
+                        if(isset($_SESSION['pickup']) || isset($_SESSION['drop'])){
+                            ?><script>
+                            location.replace("index.php");
+                            </script><?php
+                        }
+                        else{
                 ?> <script>
                 location.replace("user/index.php");
             </script><?php
-                    } else if ($row2['status'] == 1 && $row2['is_admin'] == 1) {
+                    } }
+                    else if ($row2['status'] == 1 && $row2['is_admin'] == 1) {
                         $_SESSION['sadmin'] = $name;
-                        // header("location:welcomeuser.php");
+
                         ?> <script>
                 location.replace("admin/index.php");
             </script><?php
-                    } else if ($row2['status'] == 0) {
+                    } else if ($row2['status'] == 0 && $row2['is_admin'] == 0) {
                         ?> <script>
-                alert('You are blocked by admin. You cannot access webiste');
+                alert('Kindly Wait for Admin Permisssion');
             </script><?php
                     }
                 } else {
                     echo "<script>alert('Wrong Username or Password');</script>";
                 }
                 $conn->close();
-                // }
+            }
+            else if($name == ''){
+                echo "<script>alert('Blank Email Address Field');</script>";
+            }
+            else if($pass == ''){
+                echo "<script>alert('Blank Password Field');</script>";
+            }
             }
                     ?>

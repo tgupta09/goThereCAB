@@ -89,7 +89,8 @@ include '../phpconfig.php';
                                                 <th>Total Distance</th>
                                                 <th>Luggage</th>
                                                 <th>Total Fare</th>
-                                                <th>Operations</th>
+                                                <th>User Id</th>
+                                                <th>User</th>
                                             </tr>
                                         </thead>
                                         <tbody id="output2">
@@ -162,26 +163,6 @@ include '../phpconfig.php';
         </div>
     </div>
 
-
-    <!-- modal for update -->
-    <div class="modal fade" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Invoice</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <div id="modalbody"></div>
-                </div>
-
-            </div>
-        </div>
-    </div>
     </section>
     <!-- section close -->
 
@@ -319,23 +300,6 @@ include '../phpconfig.php';
         });
     });
 
-    $(document).on('click', '#invoice', function() {
-        console.log("invoice");
-        var button = 7;
-        gl_id = $(this).data("eid");
-
-        $.ajax({
-            url: 'ridesback.php',
-            type: 'POST',
-            data: {
-                'button': button,
-                'id': gl_id
-            },
-            success: function(data) {
-                $("#modalbody").html(data);
-            }
-        });
-    });
 </script>
 
 </html>

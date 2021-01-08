@@ -42,6 +42,11 @@
 
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav ml-auto align-items-baseline">
+            
+            <!-- homeitem -->
+            <li class="nav-item" id="homeitem" style="display: none;">
+                    <a class="nav-link" href="user/index.php" style="color:white;font-size:20px;margin-right:35px;">HOME</a>
+                </li>
 
             <!-- signupitem -->
                 <li class="nav-item" id="signupitem">
@@ -61,9 +66,9 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="<?php
                         if (isset($_SESSION['sadmin'])) {
-                            echo "profileadmin.php";
-                        } else {
-                            echo "profileuser.php";
+                            echo "admin/profileadmin.php";
+                        } else if($_SESSION['suser']){
+                            echo "user/profileuser.php";
                         }
                         ?>">Profile</a>
                         <form method="POST">
@@ -103,3 +108,13 @@ else {
     </script><?php
             }
                         ?>
+<?php
+if(isset($_SESSION['suser']))
+{
+    $curPageName = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1); 
+if($curPageName == 'index.php'){
+    ?><script>$("#homeitem").show();</script><?php
+}
+}
+
+?>

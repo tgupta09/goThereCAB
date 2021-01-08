@@ -10,8 +10,10 @@ if($button == 2){
     $sql1 = "select password from tbl_user where is_admin = 1";
     $res=$conn->query($sql1);
     $row = $res->fetch_assoc();
-    if($old == $row['password']){
-        $sql2 = "update tbl_user set password = '$new' where is_admin = 1";
+    $oldencrypt = md5($old);
+    $newencrypt = md5($new);
+    if($oldencrypt == $row['password']){
+        $sql2 = "update tbl_user set password = '$newencrypt' where is_admin = 1";
         $conn->query($sql2);
     }
 }
