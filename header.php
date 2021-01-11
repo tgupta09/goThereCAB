@@ -13,6 +13,7 @@
             // header("Location:signup.php");
             }
         }
+        $conn = new mysqli("localhost", "root", "", "cedcab") or die("Connection Unsucessful");
 ?>
 
 <!DOCTYPE html>
@@ -23,6 +24,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -43,6 +45,19 @@
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav ml-auto align-items-baseline">
             
+            <!-- total earnings item for admin-->
+
+                    <?php
+                    if(isset($_SESSION['sadmin']))
+                    {
+                        echo "<li class='nav-item' id='earningsitem' style = 'font-size:20px;color:white;margin-right:30px;'>";
+                        echo "Total Earnings: ";
+                        $sql = "select sum(total_fare) from tbl_ride where status = 2";
+                        $res1 = $conn->query($sql);
+                        $row1 = $res1->fetch_assoc();
+                        echo " &#8377; ".$row1['sum(total_fare)'];}?>
+                </li>
+
             <!-- homeitem -->
             <li class="nav-item" id="homeitem" style="display: none;">
                     <a class="nav-link" href="user/index.php" style="color:white;font-size:20px;margin-right:35px;">HOME</a>
@@ -66,9 +81,9 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="<?php
                         if (isset($_SESSION['sadmin'])) {
-                            echo "admin/profileadmin.php";
+                            echo "profileadmin.php";
                         } else if($_SESSION['suser']){
-                            echo "user/profileuser.php";
+                            echo "profileuser.php";
                         }
                         ?>">Profile</a>
                         <form method="POST">

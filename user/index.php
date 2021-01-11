@@ -54,7 +54,7 @@ $sql4 ="select user_id from tbl_user where email_id='$_SESSION[suser]'";
                                     $res = $conn->query($sql);
                                     echo $res->num_rows;
                                     ?></p>
-                                    <button class="btn btn-outline-light"  onclick="window.location.href='ridesuser.php';">View Details</button>
+                                    <button class="btn btn-outline-light"  onclick="window.location.href='ridesuser.php#menu2';">View Details</button>
                                 </div>
                             </div>
                         </div>
@@ -68,7 +68,7 @@ $sql4 ="select user_id from tbl_user where email_id='$_SESSION[suser]'";
                                     $res = $conn->query($sql);
                                     echo $res->num_rows;
                                     ?></p>
-                                    <button class="btn btn-outline-light"  onclick="window.location.href='ridesuser.php';">View Details</button>
+                                    <button class="btn btn-outline-light"  onclick="window.location.href='ridesuser.php#menu3';">View Details</button>
                                 </div>
                             </div>
                         </div>
@@ -76,7 +76,7 @@ $sql4 ="select user_id from tbl_user where email_id='$_SESSION[suser]'";
                             <div class="card text-white bg-success text-center" style="max-width: 18rem;">
                                 <div class="card-body">
                                     <h5 class="card-title">Total Expenses</h5>
-                                    <p class="card-text" style="padding-bottom: 5%;">&#8377;<?php 
+                                    <p class="card-text" style="padding-top:18%;font-size:30px;">&#8377;<?php 
                                     $sql = "select sum(total_fare) from tbl_ride where status = 2 and customer_user_id = $customerid";
                                     //  and customer_user_id
                                     $res = $conn->query($sql);

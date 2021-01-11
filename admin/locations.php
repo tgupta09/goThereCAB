@@ -30,7 +30,7 @@ include '../phpconfig.php';
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#menu1">Add Location</a>
+                        <a class="nav-link active" data-toggle="tab" href="#menu1" id="m1">Add Location</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#menu2" id="m2">View Locations</a>
@@ -130,8 +130,35 @@ include '../phpconfig.php';
     <!-- footer close -->
 </body>
 <script>
-    var button,gl_id;
+var button,gl_id;
+function viewdata(){
+    button = 2;
+            $.ajax({
+                url: 'locationback.php',
+                type: 'POST',
+                data: {
+                    'button': button
+                },
+                success: function(data) {
+                    $("#output1").html(data);
+                    console.log("View Data Successfully");
+                },
+                error: function() {
+                    console.log("Error Occured View");
+                }
+            });
+}
     $(document).ready(function() {
+        var hash = window.location.hash;
+        if(hash == '#menu2'){
+            $("#menu1").removeClass('active');
+            $("#menu1").addClass('fade');
+            $("#menu2").addClass("active");
+            $("#menu2").removeClass('fade');
+            $("#m1").removeClass('active');
+            $("#m2").addClass('active');
+            viewdata();
+        }
         $("#signupitem").hide();
         $("#loginitem").hide();
 
@@ -156,23 +183,7 @@ include '../phpconfig.php';
             });
         });
 
-        $("#m2").click(function() {
-            button = 2;
-            $.ajax({
-                url: 'locationback.php',
-                type: 'POST',
-                data: {
-                    'button': button
-                },
-                success: function(data) {
-                    $("#output1").html(data);
-                    console.log("View Data Successfully");
-                },
-                error: function() {
-                    console.log("Error Occured View");
-                }
-            });
-        });
+        $("#m2").click(viewdata());
     });
 
     $(document).on('click', '#available', function() {

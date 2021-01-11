@@ -49,7 +49,7 @@ include '../phpconfig.php';
                             <div class="row justify-content-center">
                                 <div class="col-lg-12 text-center">
                                     <div id="viewdata">
-                                        <table class="table">
+                                        <table class="table" id="myTable">
                                             <thead>
                                                 <tr>
                                                     <th>From </th>
@@ -75,7 +75,7 @@ include '../phpconfig.php';
                         <div class="row">
                             <div class="col-lg-12 text-center">
                                 <div id="viewdata">
-                                    <table class="table">
+                                    <table class="table" id="myTable2">
                                         <thead>
                                             <tr>
                                                 <th>From </th>
@@ -102,7 +102,7 @@ include '../phpconfig.php';
                             <div class="row justify-content-center">
                                 <div class="col-lg-12 text-center">
                                     <div id="viewdata">
-                                        <table class="table">
+                                        <table class="table" id="myTable3">
                                             <thead>
                                                 <tr>
                                                     <th>From </th>
@@ -136,7 +136,28 @@ include '../phpconfig.php';
     <!-- footer close -->
 </body>
 <script>
-    function a() {
+var hash = window.location.hash;
+        console.log(hash);
+        if(hash == '#menu2'){
+            $("#menu1").removeClass('active');
+            $("#menu1").addClass('fade');
+            $("#menu2").addClass("active");
+            $("#menu2").removeClass('fade');
+            $("#m1").removeClass('active');
+            $("#m2").addClass('active');
+            completed();
+        }
+        else if(hash == '#menu3'){
+            $("#menu1").removeClass('active');
+            $("#menu1").addClass('fade');
+            $("#menu3").addClass("active");
+            $("#menu3").removeClass('fade');
+            $("#m1").removeClass('active');
+            $("#m3").addClass('active');
+            all();
+        }
+// pending rides
+    function pending() {
         $.ajax({
             url: 'ridesuserback.php',
             type: 'POST',
@@ -152,15 +173,9 @@ include '../phpconfig.php';
 
         });
     }
-    $(document).ready(function() {
-        // onload
-        a();
 
-    // onclick m1
-    $("#m1").click(a());
-
-    // onclick m2
-    $("#m2").click(function(){
+    // completed rides
+    function completed(){
         $.ajax({
             url: 'ridesuserback.php',
             type: 'POST',
@@ -175,9 +190,10 @@ include '../phpconfig.php';
             }
 
         });
-    });
+    }
 
-    $("#m3").click(function(){
+    // all rides
+    function all(){
         $.ajax({
             url: 'ridesuserback.php',
             type: 'POST',
@@ -192,7 +208,18 @@ include '../phpconfig.php';
             }
 
         });
-    });
+    }
+    $(document).ready(function() {
+        // onload
+        pending();
+
+    // onclick m1
+    $("#m1").click(pending());
+
+    // onclick m2
+    $("#m2").click(completed());
+
+    $("#m3").click(all());
     });
 
     $(document).on('click','#cancel',function(){

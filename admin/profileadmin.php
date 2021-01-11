@@ -43,7 +43,6 @@ $row = $res->fetch_assoc();
                             </li>
                         </ul>
 
-
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <!-- menu 1 -->

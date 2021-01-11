@@ -24,4 +24,5 @@
             </div>
         </div>
 </body>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
 </html>

@@ -46,7 +46,7 @@ if($button == 5){
     selectall($conn);
 }
 
-// delete
+// edit
 if($button == 6){
     $sql_query = "select name, distance from tbl_location where id=$id";
     $result=$conn->query($sql_query);

@@ -174,7 +174,36 @@ include '../phpconfig.php';
 
 <script>
     var button;
-    $(document).ready(function() {
+    var hash = window.location.hash;
+        console.log(hash);
+        if(hash == '#menu2'){
+            $("#menu1").removeClass('active');
+            $("#menu1").addClass('fade');
+            $("#menu2").addClass("active");
+            $("#menu2").removeClass('fade');
+            $("#m1").removeClass('active');
+            $("#m2").addClass('active');
+            completed();
+        }
+        else if(hash == '#menu3'){
+            $("#menu1").removeClass('active');
+            $("#menu1").addClass('fade');
+            $("#menu3").addClass("active");
+            $("#menu3").removeClass('fade');
+            $("#m1").removeClass('active');
+            $("#m3").addClass('active');
+            canceled();
+        }
+        else if(hash == '#menu4'){
+            $("#menu1").removeClass('active');
+            $("#menu1").addClass('fade');
+            $("#menu4").addClass("active");
+            $("#menu4").removeClass('fade');
+            $("#m1").removeClass('active');
+            $("#m4").addClass('active');
+            all();
+        }
+    function pending(){
         button = 1;
         $.ajax({
             url: 'ridesback.php',
@@ -189,26 +218,10 @@ include '../phpconfig.php';
                 console.log("Error Occured1");
             }
         });
+    }
 
-        $("m1").click(function(){
-            button = 1;
-        $.ajax({
-            url: 'ridesback.php',
-            type: 'POST',
-            data: {
-                'button': button
-            },
-            success: function(data) {
-                $("#output1").html(data)
-            },
-            error: function() {
-                console.log("Error Occured1");
-            }
-        });
-        });
-
-        $("#m2").click(function() {
-            button = 2;
+    function completed(){
+        button = 2;
             $.ajax({
                 url: 'ridesback.php',
                 type: 'POST',
@@ -222,10 +235,10 @@ include '../phpconfig.php';
                     console.log("Error Occured2");
                 }
             });
-        });
+    }
 
-        $("#m3").click(function() {
-            button = 3;
+    function canceled(){
+        button = 3;
             $.ajax({
                 url: 'ridesback.php',
                 type: 'POST',
@@ -239,10 +252,10 @@ include '../phpconfig.php';
                     console.log("Error Occured3");
                 }
             });
-        });
+    }
 
-        $("#m4").click(function() {
-            button = 4;
+    function all(){
+        button = 4;
             $.ajax({
                 url: 'ridesback.php',
                 type: 'POST',
@@ -256,7 +269,16 @@ include '../phpconfig.php';
                     console.log("Error Occured4");
                 }
             });
-        });
+    }
+    $(document).ready(function() {
+        pending();
+        $("m1").click(pending());
+
+        $("#m2").click(completed());
+
+        $("#m3").click(canceled());
+
+        $("#m4").click(all());
     });
 
     $(document).on('click', '#accept', function() {
